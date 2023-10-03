@@ -1,7 +1,9 @@
 ///
 /// # GPX_utils
 /// This file contains functions for GPX manipulation.
-///
+/// 
+/// ## Author
+/// * Tom Planche - <github.com/tomPlanche>
 
 use std::fmt::Display;
 use std::hash::Hash;

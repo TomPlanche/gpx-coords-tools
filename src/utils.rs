@@ -2,6 +2,8 @@
 /// # utils.rs
 /// This file contains utility functions.
 ///
+/// ## Author
+/// * Tom Planche - <github.com/tomPlanche>
 
 #[allow(dead_code)]
 pub(crate) fn print_type_of<T>(_: &T) {

@@ -3,3 +3,4 @@
 
 .commitignore
 commit_message.md
+Cargo.lock

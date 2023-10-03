@@ -1,18 +1,32 @@
-/// # Main
-/// The goal of this is to find the common coordinates between GPX files.
+/// # comparator main
+/// This module will compare the GPX files in the 'gpx_files' folder and will output a JSON file
+/// with a map of the common coordinates between the files.
 ///
-/// The algorithm is as follows:
-/// 1. Read the GPX files
-/// 2. For each unique pair of GPX files ((file_1, file_2) = (file_2, file_1)) so do not repeat:
-///    1. For each coordinate in file_1:
-///      1. For each coordinate in file_2:
-///       1. If the coordinates are the same:
-///        1. Add the coordinates to the common coordinates map
-/// 3. Print the common coordinates map
+/// The final map will look like this:
+/// ```json
+/// {
+///   "file_1": {
+///     "file_2": [(index_file_1, index_file_2), ...],
+///     "file_3": [(index_file_1, index_file_3), ...],
+///     ...
+///   },
+///   "file_2": {
+///     ...
+///   },
+///   ...
+/// }
+/// ```
 ///
+/// ## Author
+/// * Tom Planche - <github.com/tomPlanche>
 
+#[path = "../../gpx_utils.rs"]
 mod gpx_utils;
+
+#[path = "../../file_utils.rs"]
 mod file_utils;
+
+#[path = "../../utils.rs"]
 mod utils;
 
 use crate::gpx_utils::{calc_distance, Coord};
@@ -23,8 +37,6 @@ use std::path::PathBuf;
 use std::collections::{HashMap};
 
 fn main() {
-    let file_destination: PathBuf = PathBuf::from("./destination/final.json");
-
     // Map of file names to Vec<Coords>
     let mut gpx_coords_map: HashMap<
         &str,
@@ -94,5 +106,5 @@ fn main() {
     }
 
     // Save the file_coords_map to a file
-    file_utils::save_to_json(&file_destination, file_coords_map);
+    file_utils::save_to_json(file_coords_map);
 }

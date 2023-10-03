@@ -1,6 +1,11 @@
 /// # file_utils
 /// This file contains functions for file manipulation.
 ///
+/// ## Author
+/// * Tom Planche - <github.com/tomPlanche>
+
+#[path = "./gpx_utils.rs"]
+mod gpx_utils;
 
 use gpx::{read};
 
@@ -9,10 +14,24 @@ use std::fs::{File, read_dir};
 use std::io::{BufReader, Write};
 use std::path::PathBuf;
 
-use crate::gpx_utils::Coord;
-
+use gpx_utils::Coord;
 
 const INVALID_FILENAME: &str = "InvalidFileName";
+
+///
+/// # get_final_json_path
+/// Get the path to the 'final.json' file.
+///
+/// ## Returns
+/// * `PathBuf` - The path to the 'final.json' file.
+pub fn get_final_json_path() -> PathBuf {
+    // Construct the path to 'final.json'
+    let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR")); // Get the project's root directory
+    path.push("destination");
+    path.push("final.json");
+
+    path
+}
 
 ///
 /// # look_4_files
@@ -101,11 +120,10 @@ pub(crate) fn read_file_name(path: &PathBuf) -> &str {
 /// ## Returns
 /// * `bool` - True if the HashMap was saved, false otherwise
 pub(crate) fn save_to_json(
-    file_destination: &PathBuf,
     file_coords_map: HashMap<&str, HashMap<&str, Vec<(usize, usize)>>>
 ) {
     // Create the file
-    let mut file = File::create(file_destination).unwrap();
+    let mut file = File::create(get_final_json_path()).unwrap();
 
     // Write the HashMap to the file
     file.write_all(
