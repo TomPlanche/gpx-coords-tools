@@ -111,19 +111,26 @@ fn find_common_coords_indexes(
 ///
 /// ## Returns
 /// * `Vec<(Coord, Coord)>` - The vector of coordinates
-fn indexes_to_coords(file: &str, indexes: &Vec<(usize, usize)>) -> Vec<(Coord, Coord)> {
-    let path_buff_from_file: PathBuf = file_name_to_path_buf(file);
-    let coords: Vec<Coord> = match read_gpx_file(&path_buff_from_file) {
+fn indexes_to_coords(file_1: &str, file_2: &str, indexes: &Vec<(usize, usize)>) -> Vec<(Coord, Coord)> {
+    let path_buff_from_file_1: PathBuf = file_name_to_path_buf(file_1);
+    let path_buff_from_file_2: PathBuf = file_name_to_path_buf(file_2);
+
+    let coord_1: Vec<Coord> = match read_gpx_file(&path_buff_from_file_1) {
         Some(coords) => coords,
-        None => panic!("Could not read the file {:?}", file),
+        None => panic!("Could not read the file {:?}", file_1),
+    };
+
+    let coord_2: Vec<Coord> = match read_gpx_file(&path_buff_from_file_2) {
+        Some(coords) => coords,
+        None => panic!("Could not read the file {:?}", file_2),
     };
 
     let mut coords_pairs: Vec<(Coord, Coord)> = Vec::new();
 
     for (index_1, index_2) in indexes {
         coords_pairs.push((
-            coords[*index_1],
-            coords[*index_2]
+            coord_1[*index_1],
+            coord_2[*index_2]
         ));
     }
 
@@ -132,6 +139,7 @@ fn indexes_to_coords(file: &str, indexes: &Vec<(usize, usize)>) -> Vec<(Coord, C
 
 fn main() {
     println!("{:?}", find_common_coords_indexes("puertoviejofenars.gpx", "EmbalseCuezoPradera.gpx"));
+    print!("{:?}", indexes_to_coords("puertoviejofenars.gpx", "EmbalseCuezoPradera.gpx", &find_common_coords_indexes("puertoviejofenars.gpx", "EmbalseCuezoPradera.gpx")));
 }
 
 // END FUNCTIONS =======================================================================================  END FUNCTIONS
