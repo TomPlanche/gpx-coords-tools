@@ -5,13 +5,16 @@
 /// ## Author
 /// * Tom Planche - <github.com/tomPlanche>
 
+// IMPORTS ===================================================================================================  IMPORTS
 use std::fmt::Display;
 use std::hash::Hash;
 use serde::{Serialize};
 use serde::ser::SerializeStruct;
+// END IMPORTS ==========================================================================================   END IMPORTS
 
+// VARIABLES ================================================================================================ VARIABLE
 #[derive(Debug, Clone, Copy)]
-pub(crate) struct Coord {
+pub struct Coord {
     pub(crate) lat: f64,
     pub(crate) lon: f64,
 }
@@ -19,7 +22,7 @@ pub(crate) struct Coord {
 impl Serialize for Coord {
     ///
     /// # serialize
-    /// This function will serialize a Coord struct.
+    /// Serialize a Coord struct.
     ///
     /// ## Arguments
     /// * `serializer(S)` - The serializer
@@ -77,9 +80,12 @@ impl PartialEq for Coord {
 // PartialEq being implemented, Eq can be derived.
 impl Eq for Coord {}
 
+// END VARIABLES =======================================================================================  END VARIABLES
+
+// FUNCTIONS ================================================================================================ FUNCTIONS
 ///
 /// # calc_distance
-/// This function will calculate the distance between two coordinates
+/// Calculate the distance between two coordinates
 /// using the Haversine formula.
 ///
 /// ## Arguments
@@ -131,3 +137,9 @@ fn test_calc_distance() {
     assert_eq!(calc_distance(coord1, coord2, Some(true)), 98.6835497563641);
     assert_eq!(calc_distance(coord1, coord1, None), 0.0);
 }
+
+// END FUNCTIONS =======================================================================================  END FUNCTIONS
+
+//
+// * End of file file_utils.rs
+//

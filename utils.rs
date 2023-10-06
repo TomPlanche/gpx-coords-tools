@@ -4,16 +4,35 @@
 ///
 /// ## Author
 /// * Tom Planche - <github.com/tomPlanche>
+///
 
-#[allow(dead_code)]
-pub(crate) fn print_type_of<T>(_: &T) {
-    println!("{}", std::any::type_name::<T>())
+// IMPORTS ===================================================================================================  IMPORTS
+use std::collections::HashMap;
+extern crate proc_macro;
+// END IMPORTS ==========================================================================================   END IMPORTS
+
+// VARIABLES ================================================================================================ VARIABLE
+pub type FileCoordsHM = HashMap<String, HashMap<String, Vec<(usize, usize)>>>;
+
+pub enum VecOrHashMap<T, U> {
+    Vec(Vec<T>),
+    HashMap(HashMap<T, U>),
 }
 
+impl<T, U> VecOrHashMap<T, U> {
+    pub fn is_empty(&self) -> bool {
+        match self {
+            VecOrHashMap::Vec(vec) => vec.is_empty(),
+            VecOrHashMap::HashMap(hashmap) => hashmap.is_empty(),
+        }
+    }
+}
+// END VARIABLES ======================================================================================= END VARIABLES
 
+// FUNCTIONS ================================================================================================ FUNCTIONS
 ///
 /// # get_unique_pairs
-/// This function returns the unique pairs of a vector.
+/// Returns the unique pairs of a vector.
 ///
 /// ## Arguments
 /// * `vectorT<T>` - The vector of T elements
@@ -37,6 +56,11 @@ where T: Clone {
 }
 
 
+#[allow(dead_code)]
+pub(crate) fn print_type_of<T>(_: &T) {
+    println!("{}", std::any::type_name::<T>())
+}
+
 #[test]
 fn test_get_unique_pairs() {
     let vector: Vec<i32> = vec![1, 2, 3, 4, 5];
@@ -46,3 +70,9 @@ fn test_get_unique_pairs() {
         (&1, &2), (&1, &3), (&1, &4), (&1, &5), (&2, &3), (&2, &4), (&2, &5), (&3, &4), (&3, &5), (&4, &5)
     ]);
 }
+
+// END FUNCTIONS =======================================================================================  END FUNCTIONS
+
+//
+// * End of file file_utils.rs
+//

@@ -20,6 +20,7 @@
 /// ## Author
 /// * Tom Planche - <github.com/tomPlanche>
 
+// IMPORTS ===================================================================================================  IMPORTS
 #[path = "gpx_utils.rs"]
 mod gpx_utils;
 
@@ -30,12 +31,15 @@ mod file_utils;
 mod utils;
 
 use crate::gpx_utils::{calc_distance, Coord};
-use crate::file_utils::{look_4_files, read_file_name, read_gpx_file};
-use crate::utils::{get_unique_pairs};
+use crate::file_utils::{look_4_files, read_file_name, read_gpx_file, save_to_json};
+use crate::utils::{FileCoordsHM, get_unique_pairs};
 
 use std::path::PathBuf;
 use std::collections::{HashMap};
+// END IMPORTS ==========================================================================================   END IMPORTS
 
+
+// FUNCTIONS ================================================================================================ FUNCTIONS
 fn main() {
     // Map of file names to Vec<Coords>
     let mut gpx_coords_map: HashMap<
@@ -44,13 +48,7 @@ fn main() {
     > = HashMap::new();
 
     // Final map containing for each pair of files the common coordinates
-    let mut file_coords_map: HashMap<
-        String,
-        HashMap<
-            String,
-            Vec<(usize, usize)>
-        >
-    > = HashMap::new();
+    let mut file_coords_map: FileCoordsHM = HashMap::new();
 
     // Get the GPX files
     let gpx_files: Vec<PathBuf> = look_4_files();
@@ -106,5 +104,11 @@ fn main() {
     }
 
     // Save the file_coords_map to a file
-    file_utils::save_to_json(file_coords_map);
+    save_to_json(file_coords_map);
 }
+
+// END FUNCTIONS =======================================================================================  END FUNCTIONS
+
+//
+// * End of file file_utils.rs
+//
