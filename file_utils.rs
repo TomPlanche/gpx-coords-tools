@@ -56,18 +56,18 @@ pub fn get_final_json_path() -> PathBuf {
 pub(crate) fn look_4_files() -> Vec<PathBuf> {
     let paths = read_dir("./assets/").unwrap();
 
-    return paths
+    paths
         .filter_map(|entry| {
             let entry = entry.unwrap();
             let path = entry.path();
 
             if path.is_file() && path.extension().unwrap() == "gpx" {
-                Some(path);
+                return Some(path);
             }
 
-            return None;
+            None
         })
-        .collect();
+        .collect()
 }
 
 ///
@@ -80,7 +80,7 @@ pub(crate) fn look_4_files() -> Vec<PathBuf> {
 /// ## Returns
 /// * `Vector<Coord>` - A vector of coordinates.
 pub fn read_gpx_file(path: &PathBuf) -> Option<Vec<Coord>> {
-    return match read(BufReader::new(File::open(path).unwrap())) {
+    match read(BufReader::new(File::open(path).unwrap())) {
         Ok(gpx) => {
             let mut coords: Vec<Coord> = Vec::new();
             for track in gpx.tracks {
@@ -100,7 +100,7 @@ pub fn read_gpx_file(path: &PathBuf) -> Option<Vec<Coord>> {
             println!("Error: : {}", error);
             None
         }
-    };
+    }
 }
 
 /// # read_file_name
@@ -119,7 +119,7 @@ pub(crate) fn read_file_name(path: &PathBuf) -> Option<String> {
         }
     }
     // If the path does not contain a valid file name, return a default value or handle it as needed.
-    return None;
+    None
 }
 
 ///

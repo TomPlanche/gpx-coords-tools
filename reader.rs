@@ -49,7 +49,7 @@ use crate::utils::{FileCoordsHM};
 /// ## Returns
 /// * `bool` - True if the file exists, false otherwise
 fn check_if_file_exists() -> bool {
-    return get_final_json_path().exists();
+    get_final_json_path().exists()
 }
 
 ///

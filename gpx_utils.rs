@@ -73,7 +73,7 @@ impl Hash for Coord {
 // PartialEq for the '==' operation.
 impl PartialEq for Coord {
     fn eq(&self, other: &Self) -> bool {
-        return self.lat == other.lat && self.lon == other.lon;
+        self.lat == other.lat && self.lon == other.lon
     }
 }
 
@@ -119,7 +119,7 @@ pub(crate) fn calc_distance(coord1: Coord, coord2: Coord, in_meter: Option<bool>
         * a.sqrt()
         .atan2((1.0 - a).sqrt());
 
-    return EARTH_RADIUS * c * if in_meter.unwrap_or(true) { 1000.0 } else { 1.0 };
+    EARTH_RADIUS * c * if in_meter.unwrap_or(true) { 1000.0 } else { 1.0 }
 }
 
 #[test]
