@@ -40,7 +40,9 @@ where T: Clone {
 #[test]
 fn test_get_unique_pairs() {
     let vector: Vec<i32> = vec![1, 2, 3, 4, 5];
-    let unique_pairs: Vec<(i32, i32)> = get_unique_pairs(&vector);
+    let unique_pairs: Vec<(&i32, &i32)> = get_unique_pairs(&vector);
 
-    assert_eq!(unique_pairs, vec![(1, 2), (1, 3), (1, 4), (1, 5), (2, 3), (2, 4), (2, 5), (3, 4), (3, 5), (4, 5)]);
+    assert_eq!(unique_pairs, vec![
+        (&1, &2), (&1, &3), (&1, &4), (&1, &5), (&2, &3), (&2, &4), (&2, &5), (&3, &4), (&3, &5), (&4, &5)
+    ]);
 }

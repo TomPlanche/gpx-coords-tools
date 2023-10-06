@@ -1,7 +1,7 @@
 ///
-/// # GPX_utils
+/// # GPX_utils.rs
 /// This file contains functions for GPX manipulation.
-/// 
+///
 /// ## Author
 /// * Tom Planche - <github.com/tomPlanche>
 

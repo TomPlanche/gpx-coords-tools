@@ -1,20 +1,17 @@
-/// # file_utils
+/// # file_utils.rs
 /// This file contains functions for file manipulation.
 ///
 /// ## Author
 /// * Tom Planche - <github.com/tomPlanche>
 
-#[path = "./gpx_utils.rs"]
-mod gpx_utils;
-
 use gpx::{read};
 
 use std::collections::HashMap;
 use std::fs::{File, read_dir};
-use std::io::{BufReader, Write};
+use std::io::{BufReader, Read, Write};
 use std::path::PathBuf;
 
-use gpx_utils::Coord;
+use crate::gpx_utils::Coord;
 
 const INVALID_FILENAME: &str = "InvalidFileName";
 
@@ -27,7 +24,7 @@ const INVALID_FILENAME: &str = "InvalidFileName";
 pub fn get_final_json_path() -> PathBuf {
     // Construct the path to 'final.json'
     let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR")); // Get the project's root directory
-    path.push("destination");
+    path.push("./destination");
     path.push("final.json");
 
     path
@@ -89,7 +86,6 @@ pub(crate) fn read_gpx_file(path: &PathBuf) -> Vec<Coord> {
     };
 
 }
-
 /// # read_file_name
 /// Read a file name from a PathBuf
 ///
@@ -98,15 +94,15 @@ pub(crate) fn read_gpx_file(path: &PathBuf) -> Vec<Coord> {
 ///
 /// ## Returns
 /// * `&str` - The file name
-pub(crate) fn read_file_name(path: &PathBuf) -> &str {
+pub(crate) fn read_file_name(path: &PathBuf) -> String {
     // Use the file_name() method to get the file name
     if let Some(file_name) = path.file_name() {
         if let Some(file_name_str) = file_name.to_str() {
-            return file_name_str;
+            return file_name_str.to_string();
         }
     }
     // If the path does not contain a valid file name, return a default value or handle it as needed.
-    INVALID_FILENAME
+    INVALID_FILENAME.to_string()
 }
 
 ///
@@ -120,7 +116,7 @@ pub(crate) fn read_file_name(path: &PathBuf) -> &str {
 /// ## Returns
 /// * `bool` - True if the HashMap was saved, false otherwise
 pub(crate) fn save_to_json(
-    file_coords_map: HashMap<&str, HashMap<&str, Vec<(usize, usize)>>>
+    file_coords_map: HashMap<String, HashMap<String, Vec<(usize, usize)>>>
 ) {
     // Create the file
     let mut file = File::create(get_final_json_path()).unwrap();
@@ -130,3 +126,30 @@ pub(crate) fn save_to_json(
         serde_json::to_string(&file_coords_map).unwrap().as_bytes()
     ).unwrap();
 }
+
+
+/// # load_from_json
+/// Load a HashMap<&str, HashMap<&str, Vec<(usize, usize)>>> from a JSON file.
+///
+/// ## Arguments
+/// * `file_path(&PathBuf)` - The path to the JSON file
+///
+/// ## Returns
+/// * `Result<HashMap<&str, HashMap<&str, Vec<(usize, usize)>>>` - A Result containing the loaded HashMap or an error
+pub fn load_from_json(
+    file_path: &PathBuf,
+) -> Result<HashMap<String, HashMap<String, Vec<(usize, usize)>>>, Box<dyn std::error::Error>> {
+    // Open the file
+    let mut file = File::open(file_path)?;
+
+    // Read the contents of the file into a string
+    let mut json_string = String::new();
+    file.read_to_string(&mut json_string)?;
+
+    // Parse the JSON string into a HashMap
+    let result: HashMap<String, HashMap<String, Vec<(usize, usize)>>> =
+        serde_json::from_str(&json_string)?;
+
+    Ok(result)
+}
+

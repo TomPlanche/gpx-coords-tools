@@ -13,8 +13,8 @@ serde_json = "1.0.107"
 
 [[bin]]
 name = "comparator"
-path = "src/comparator/bin/main.rs"
+path = "comparator.rs"
 
 [[bin]]
 name = "reader"
-path = "src/reader/bin/main.rs"
+path = "reader.rs"

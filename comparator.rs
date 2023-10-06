@@ -1,4 +1,4 @@
-/// # comparator main
+/// # comparator.rs
 /// This module will compare the GPX files in the 'gpx_files' folder and will output a JSON file
 /// with a map of the common coordinates between the files.
 ///
@@ -20,18 +20,18 @@
 /// ## Author
 /// * Tom Planche - <github.com/tomPlanche>
 
-#[path = "../../gpx_utils.rs"]
+#[path = "gpx_utils.rs"]
 mod gpx_utils;
 
-#[path = "../../file_utils.rs"]
+#[path = "file_utils.rs"]
 mod file_utils;
 
-#[path = "../../utils.rs"]
+#[path = "utils.rs"]
 mod utils;
 
 use crate::gpx_utils::{calc_distance, Coord};
 use crate::file_utils::{look_4_files, read_file_name, read_gpx_file};
-use crate::utils::get_unique_pairs;
+use crate::utils::{get_unique_pairs};
 
 use std::path::PathBuf;
 use std::collections::{HashMap};
@@ -39,15 +39,15 @@ use std::collections::{HashMap};
 fn main() {
     // Map of file names to Vec<Coords>
     let mut gpx_coords_map: HashMap<
-        &str,
+        String,
         Vec<Coord>
     > = HashMap::new();
 
     // Final map containing for each pair of files the common coordinates
     let mut file_coords_map: HashMap<
-        &str,
+        String,
         HashMap<
-            &str,
+            String,
             Vec<(usize, usize)>
         >
     > = HashMap::new();
@@ -69,16 +69,16 @@ fn main() {
         println!("Comparing {:?} and {:?}", file_1, file_2);
 
         // Get the file names
-        let file_1_name: &str = read_file_name(&file_1);
-        let file_2_name: &str = read_file_name(&file_2);
+        let file_1_name: String = read_file_name(&file_1);
+        let file_2_name: String = read_file_name(&file_2);
 
         // Get the coordinates
-        let file_1_coords: &Vec<Coord> = gpx_coords_map.get(file_1_name).unwrap();
-        let file_2_coords: &Vec<Coord> = gpx_coords_map.get(file_2_name).unwrap();
+        let file_1_coords: &Vec<Coord> = gpx_coords_map.get(&*file_1_name).unwrap();
+        let file_2_coords: &Vec<Coord> = gpx_coords_map.get(&*file_2_name).unwrap();
 
         // Init the file_1_coords_map
         file_coords_map
-            .entry(file_1_name)
+            .entry(file_1_name.clone())
             .or_insert_with(HashMap::new);
 
         // Compare the coordinates
@@ -90,9 +90,9 @@ fn main() {
 
                     // Add the coordinates to the file_1_coords_map
                     file_coords_map
-                        .get_mut(file_1_name)
+                        .get_mut(file_1_name.clone().as_str())
                         .unwrap()
-                        .entry(file_2_name)
+                        .entry(file_2_name.clone())
                         .or_insert_with(Vec::new)
                         .push((index_1, index_2));
                 }
@@ -100,8 +100,8 @@ fn main() {
         }
 
         // If there are no common coordinates, remove the file_1_name from the file_coords_map
-        if file_coords_map.get(file_1_name).unwrap().len() < 1 {
-            file_coords_map.remove(file_1_name);
+        if file_coords_map.get(&*file_1_name).unwrap().len() < 1 {
+            file_coords_map.remove(&*file_1_name);
         }
     }
 
