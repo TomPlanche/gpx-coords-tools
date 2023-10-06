@@ -17,8 +17,6 @@ use crate::utils::{FileCoordsHM};
 // END IMPORTS ==========================================================================================   END IMPORTS
 
 // VARIABLES ================================================================================================ VARIABLE
-// Constants
-const INVALID_FILENAME: &str = "InvalidFileName";
 // END VARIABLES ======================================================================================= END VARIABLES
 
 // FUNCTIONS ================================================================================================ FUNCTIONS
@@ -62,11 +60,11 @@ pub(crate) fn look_4_files() -> Vec<PathBuf> {
         .filter_map(|entry| {
             let entry = entry.unwrap();
             let path = entry.path();
-            if path.is_file() {
-                if path.extension().unwrap() == "gpx" {
-                    return Some(path);
-                }
+
+            if path.is_file() && path.extension().unwrap() == "gpx" {
+                Some(path);
             }
+
             return None;
         })
         .collect();
@@ -81,7 +79,7 @@ pub(crate) fn look_4_files() -> Vec<PathBuf> {
 ///
 /// ## Returns
 /// * `Vector<Coord>` - A vector of coordinates.
-pub fn read_gpx_file(path: &PathBuf) -> Vec<Coord> {
+pub fn read_gpx_file(path: &PathBuf) -> Option<Vec<Coord>> {
     return match read(BufReader::new(File::open(path).unwrap())) {
         Ok(gpx) => {
             let mut coords: Vec<Coord> = Vec::new();
@@ -96,11 +94,11 @@ pub fn read_gpx_file(path: &PathBuf) -> Vec<Coord> {
                 }
             }
 
-            coords
+            Some(coords)
         }
         Err(error) => {
-            println!("{}: {}", "Error: ", error);
-            Vec::new()
+            println!("Error: : {}", error);
+            None
         }
     };
 }
@@ -113,15 +111,15 @@ pub fn read_gpx_file(path: &PathBuf) -> Vec<Coord> {
 ///
 /// ## Returns
 /// * `&str` - The file name
-pub(crate) fn read_file_name(path: &PathBuf) -> String {
+pub(crate) fn read_file_name(path: &PathBuf) -> Option<String> {
     // Use the file_name() method to get the file name
     if let Some(file_name) = path.file_name() {
         if let Some(file_name_str) = file_name.to_str() {
-            return file_name_str.to_string();
+            return Some(file_name_str.to_string());
         }
     }
     // If the path does not contain a valid file name, return a default value or handle it as needed.
-    INVALID_FILENAME.to_string()
+    return None;
 }
 
 ///
@@ -143,11 +141,11 @@ pub(crate) fn save_to_json(
     // Write the HashMap to the file
     match file.write_all(serde_json::to_string(&file_coords_map).unwrap().as_bytes()) {
         Ok(_) => {
-            println!("{}: {}", "Successfully saved to", get_final_json_path().display());
+            println!("Successfully saved to: {}", get_final_json_path().display());
             true
         }
         Err(error) => {
-            println!("{}: {}", "Error: ", error);
+            println!("Error: {}", error);
             false
         }
     }

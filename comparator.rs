@@ -55,9 +55,19 @@ fn main() {
 
     // Init the gpx_coords_map with the actual coordinates
     for file in &gpx_files {
+        let file_name: String = match read_file_name(file) {
+            Some(file_name) => file_name,
+            None => panic!("Could not read the file name of {:?}", file),
+        };
+
+        let coords: Vec<Coord> = match read_gpx_file(file) {
+            Some(coords) => coords,
+            None => panic!("Could not read the file {:?}", file),
+        };
+
         gpx_coords_map.insert(
-            read_file_name(file),
-            read_gpx_file(file)
+            file_name,
+            coords
         );
     }
 
@@ -67,8 +77,14 @@ fn main() {
         println!("Comparing {:?} and {:?}", file_1, file_2);
 
         // Get the file names
-        let file_1_name: String = read_file_name(&file_1);
-        let file_2_name: String = read_file_name(&file_2);
+        let file_1_name: String = match read_file_name(file_1) {
+            Some(file_name) => file_name,
+            None => panic!("Could not read the file name of {:?}", file_1),
+        };
+        let file_2_name: String = match read_file_name(file_2) {
+            Some(file_name) => file_name,
+            None => panic!("Could not read the file name of {:?}", file_2),
+        };
 
         // Get the coordinates
         let file_1_coords: &Vec<Coord> = gpx_coords_map.get(&*file_1_name).unwrap();
@@ -77,7 +93,7 @@ fn main() {
         // Init the file_1_coords_map
         file_coords_map
             .entry(file_1_name.clone())
-            .or_insert_with(HashMap::new);
+            .or_default();
 
         // Compare the coordinates
         for (index_1, coord_1) in file_1_coords.iter().enumerate() {
@@ -91,14 +107,14 @@ fn main() {
                         .get_mut(file_1_name.clone().as_str())
                         .unwrap()
                         .entry(file_2_name.clone())
-                        .or_insert_with(Vec::new)
+                        .or_default()
                         .push((index_1, index_2));
                 }
             }
         }
 
         // If there are no common coordinates, remove the file_1_name from the file_coords_map
-        if file_coords_map.get(&*file_1_name).unwrap().len() < 1 {
+        if file_coords_map.get(&*file_1_name).unwrap().is_empty() {
             file_coords_map.remove(&*file_1_name);
         }
     }

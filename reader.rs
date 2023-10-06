@@ -52,8 +52,6 @@ fn check_if_file_exists() -> bool {
     return get_final_json_path().exists();
 }
 
-
-
 ///
 /// # read_from_file
 /// Read from the destination file and returns the hashmap.
@@ -72,7 +70,6 @@ fn read_from_file() -> FileCoordsHM {
 
     load_from_json(&path_buff)
 }
-
 
 ///
 /// # find_common_coords
@@ -97,10 +94,8 @@ fn find_common_coords_indexes(
         (file_1.to_string(), file_2.to_string())
     };
 
-    if file_coords_map.contains_key(&final_file_1) {
-        if file_coords_map[&final_file_1].contains_key(&final_file_2) {
-            common_coords = file_coords_map[&final_file_1][&final_file_2].clone();
-        }
+    if file_coords_map.contains_key(&final_file_1) && file_coords_map[&final_file_1].contains_key(&final_file_2) {
+        common_coords = file_coords_map[&final_file_1][&final_file_2].clone();
     }
 
     common_coords
@@ -118,14 +113,17 @@ fn find_common_coords_indexes(
 /// * `Vec<(Coord, Coord)>` - The vector of coordinates
 fn indexes_to_coords(file: &str, indexes: &Vec<(usize, usize)>) -> Vec<(Coord, Coord)> {
     let path_buff_from_file: PathBuf = file_name_to_path_buf(file);
-    let coords: Vec<Coord> = read_gpx_file(&path_buff_from_file);
+    let coords: Vec<Coord> = match read_gpx_file(&path_buff_from_file) {
+        Some(coords) => coords,
+        None => panic!("Could not read the file {:?}", file),
+    };
 
     let mut coords_pairs: Vec<(Coord, Coord)> = Vec::new();
 
     for (index_1, index_2) in indexes {
         coords_pairs.push((
-            coords[*index_1].clone(),
-            coords[*index_2].clone()
+            coords[*index_1],
+            coords[*index_2]
         ));
     }
 
