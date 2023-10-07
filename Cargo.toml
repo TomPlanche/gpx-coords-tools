@@ -18,3 +18,7 @@ path = "comparator.rs"
 [[bin]]
 name = "reader"
 path = "reader.rs"
+
+[[bin]]
+name = "find_closest_points"
+path = "find_closest_points.rs"

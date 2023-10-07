@@ -119,7 +119,7 @@ pub(crate) fn calc_distance(coord1: Coord, coord2: Coord, in_meter: Option<bool>
         * a.sqrt()
         .atan2((1.0 - a).sqrt());
 
-    EARTH_RADIUS * c * if in_meter.unwrap_or(true) { 1000.0 } else { 1.0 }
+    EARTH_RADIUS * c * if in_meter.unwrap_or(false) { 1000.0 } else { 1.0 }
 }
 
 #[test]
@@ -134,7 +134,7 @@ fn test_calc_distance() {
         lon: 1.0,
     };
 
-    assert_eq!(calc_distance(coord1, coord2, Some(true)), 98.6835497563641);
+    assert_eq!(calc_distance(coord1, coord2, None), 98.6835497563641);
     assert_eq!(calc_distance(coord1, coord1, None), 0.0);
 }
 

@@ -5,6 +5,8 @@
 /// * Tom Planche - <github.com/tomPlanche>
 
 // IMPORTS ===================================================================================================  IMPORTS
+mod utils;
+
 use gpx::{read};
 
 use std::collections::HashMap;
@@ -13,7 +15,7 @@ use std::io::{BufReader, Read, Write};
 use std::path::PathBuf;
 
 use crate::gpx_utils::Coord;
-use crate::utils::{FileCoordsHM};
+use utils::{FileCoordsHM};
 // END IMPORTS ==========================================================================================   END IMPORTS
 
 // VARIABLES ================================================================================================ VARIABLE
@@ -87,8 +89,8 @@ pub fn read_gpx_file(path: &PathBuf) -> Option<Vec<Coord>> {
                 for segment in track.segments {
                     for point in segment.points {
                         coords.push(Coord {
-                            lat: point.point().x(),
-                            lon: point.point().y(),
+                            lat: point.point().y(),
+                            lon: point.point().x(),
                         });
                     }
                 }
