@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 ansi_term = "0.12.1"
 gpx = "0.9.1"
-serde = "1.0.188"
+serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.107"
 
 [[bin]]
@@ -22,3 +22,7 @@ path = "reader.rs"
 [[bin]]
 name = "find_closest_points"
 path = "find_closest_points.rs"
+
+[[bin]]
+name = "calc_distance_from_json_point"
+path = "calc_distance_from_json_point.rs"

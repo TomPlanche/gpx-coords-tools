@@ -8,53 +8,19 @@
 // IMPORTS ===================================================================================================  IMPORTS
 use std::fmt::Display;
 use std::hash::Hash;
-use serde::{Serialize};
-use serde::ser::SerializeStruct;
+
+use serde::{Deserialize, Serialize};
+// use serde::de::value::MapDeserializer;
+// use serde::ser::SerializeStruct;
 // END IMPORTS ==========================================================================================   END IMPORTS
 
 // VARIABLES ================================================================================================ VARIABLE
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct Coord {
     pub(crate) lat: f64,
     pub(crate) lon: f64,
 }
 
-impl Serialize for Coord {
-    ///
-    /// # serialize
-    /// Serialize a Coord struct.
-    ///
-    /// ## Arguments
-    /// * `serializer(S)` - The serializer
-    ///
-    /// ## Returns
-    /// * `Result<S::Ok, S::Error>` - The result of the serialization
-    ///
-    /// ## Example
-    /// ```
-    /// use gpx_utils::Coord;
-    /// use serde_json::json;
-    ///
-    /// let coord: Coord = Coord {
-    ///    lat: 48.8534,
-    ///   lon: 2.3488,
-    /// };
-    ///
-    /// let serialized_coord = serde_json::to_string(&coord).unwrap();
-    ///
-    /// assert_eq!(serialized_coord, json!({
-    ///    "lat": 48.8534,
-    ///   "lon": 2.3488,
-    /// }).to_string());
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where S: serde::Serializer {
-        let mut state = serializer.serialize_struct("Coord", 2)?;
-
-        state.serialize_field("lat", &self.lat)?;
-        state.serialize_field("lon", &self.lon)?;
-        state.end()
-    }
-}
 
 impl Display for Coord {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -136,6 +102,32 @@ fn test_calc_distance() {
 
     assert_eq!(calc_distance(coord1, coord2, None), 98.6835497563641);
     assert_eq!(calc_distance(coord1, coord1, None), 0.0);
+}
+
+#[test]
+fn test_coord_serialize() {
+    let coord1 = Coord {
+        lat: 48.8534,
+        lon: 2.3488,
+    };
+
+    let coord1_str = serde_json::to_string(&coord1).unwrap();
+
+    assert_eq!(coord1_str, "{\"lat\":48.8534,\"lon\":2.3488}");
+}
+
+#[test]
+fn test_coord_deserialize() {
+    let coord1 = Coord {
+        lat: 48.8534,
+        lon: 2.3488,
+    };
+
+    let coord1_str = serde_json::to_string(&coord1).unwrap();
+
+    let coord1_deserialized: Coord = serde_json::from_str(&coord1_str).unwrap();
+
+    assert_eq!(coord1_deserialized, coord1);
 }
 
 // END FUNCTIONS =======================================================================================  END FUNCTIONS
