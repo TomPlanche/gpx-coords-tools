@@ -6,7 +6,7 @@
 /// * Tom Planche - <github.com/tomPlanche>
 
 // IMPORTS ===================================================================================================  IMPORTS
-use std::fmt::Display;
+use std::fmt::{Display, Formatter};
 use std::hash::Hash;
 
 use serde::{Deserialize, Serialize};
@@ -19,9 +19,28 @@ pub struct Coord {
     pub lon: f64,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Point {
+    pub coords: Coord,
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub elevation: Option<f64>,
+}
+
+
 impl Display for Coord {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{{ lat: {}, lon: {} }}", self.lat, self.lon)
+    }
+}
+
+impl Display for Point {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{{ coords: {}, name: {:?}, description: {:?}, elevation: {:?} }}",
+               self.coords,
+               self.name,
+               self.description,
+               self.elevation)
     }
 }
 

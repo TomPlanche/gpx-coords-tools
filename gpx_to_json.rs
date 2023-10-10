@@ -15,7 +15,7 @@ use std::io::Write;
 use std::path::PathBuf;
 use file_utils::{file_name_to_path_buf, read_gpx_file};
 use crate::file_utils::look_4_files;
-use crate::gpx_utils::Coord;
+use crate::gpx_utils::{Coord, Point};
 
 // END IMPORTS ==========================================================================================   END IMPORTS
 
@@ -34,9 +34,22 @@ fn gpx_to_json(file_name: String, file_destination: String) -> bool {
         None => panic!("Could not read the file {:?}", file_name),
     };
 
+    let nb_points: usize = coords.len();
+
+    let points: Vec<Point> = coords
+        .iter()
+        .enumerate()
+        .map(|(i, coord)| Point {
+            coords: *coord,
+            name: Some(format!("{}/{}", i, nb_points)),
+            description: None,
+            elevation: None,
+        })
+        .collect();
+
     let mut file = File::create(&file_destination).unwrap();
 
-    match file.write_all(serde_json::to_string(&coords).unwrap().as_bytes()) {
+    match file.write_all(serde_json::to_string(&points).unwrap().as_bytes()) {
         Ok(_) => {
             println!("Successfully saved to: {}", file_destination);
             true
