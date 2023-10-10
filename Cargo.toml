@@ -26,3 +26,7 @@ path = "find_closest_points.rs"
 [[bin]]
 name = "calc_distance_from_json_point"
 path = "calc_distance_from_json_point.rs"
+
+[[bin]]
+name = "gpx_to_json"
+path = "gpx_to_json.rs"

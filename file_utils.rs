@@ -55,7 +55,7 @@ pub fn get_final_json_path() -> PathBuf {
 ///
 /// ## Returns
 /// * `Vec<PathBuf>` - A vector of PathBuf.
-pub(crate) fn look_4_files() -> Vec<PathBuf> {
+pub fn look_4_files() -> Vec<PathBuf> {
     let paths = read_dir("./assets/").unwrap();
 
     paths
@@ -113,7 +113,7 @@ pub fn read_gpx_file(path: &PathBuf) -> Option<Vec<Coord>> {
 ///
 /// ## Returns
 /// * `&str` - The file name
-pub(crate) fn read_file_name(path: &PathBuf) -> Option<String> {
+pub fn read_file_name(path: &PathBuf) -> Option<String> {
     // Use the file_name() method to get the file name
     if let Some(file_name) = path.file_name() {
         if let Some(file_name_str) = file_name.to_str() {
@@ -134,7 +134,7 @@ pub(crate) fn read_file_name(path: &PathBuf) -> Option<String> {
 ///
 /// ## Returns
 /// * `bool` - True if the HashMap was saved, false otherwise
-pub(crate) fn save_to_json(
+pub fn save_to_json(
     file_coords_map: HashMap<String, HashMap<String, Vec<(usize, usize)>>>
 ) -> bool{
     // Create the file

@@ -38,7 +38,7 @@ impl<T, U> VecOrHashMap<T, U> {
 ///
 /// ## Returns
 /// * `Vec<(T, T)>` - The unique pairs of the vector
-pub(crate)fn get_unique_pairs<T>(vector: &Vec<T>) -> Vec<(&T, &T)>
+pub fn get_unique_pairs<T>(vector: &Vec<T>) -> Vec<(&T, &T)>
 where T: Clone {
     let mut unique_pairs: Vec<(&T, &T)> = Vec::new();
 

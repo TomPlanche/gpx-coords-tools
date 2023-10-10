@@ -10,17 +10,14 @@ use std::fmt::Display;
 use std::hash::Hash;
 
 use serde::{Deserialize, Serialize};
-// use serde::de::value::MapDeserializer;
-// use serde::ser::SerializeStruct;
 // END IMPORTS ==========================================================================================   END IMPORTS
 
 // VARIABLES ================================================================================================ VARIABLE
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct Coord {
-    pub(crate) lat: f64,
-    pub(crate) lon: f64,
+    pub lat: f64,
+    pub lon: f64,
 }
-
 
 impl Display for Coord {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -60,7 +57,7 @@ impl Eq for Coord {}
 ///
 /// ## Returns
 /// * `f64` - The distance between the two coordinates (in meters).
-pub(crate) fn calc_distance(coord1: Coord, coord2: Coord, in_meter: Option<bool>) -> f64 {
+pub fn calc_distance(coord1: Coord, coord2: Coord, in_meter: Option<bool>) -> f64 {
     let Coord { lat: lat_1, lon: lon_1 } = coord1;
     let Coord { lat: lat_2, lon: lon_2 } = coord2;
 
