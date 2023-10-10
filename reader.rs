@@ -44,7 +44,7 @@ use crate::utils::{FileCoordsHM};
 // FUNCTIONS ================================================================================================ FUNCTIONS
 ///
 /// # check_if_file_exists
-/// Checks if the destination file exists.
+/// Checks if the output file exists.
 ///
 /// ## Returns
 /// * `bool` - True if the file exists, false otherwise
@@ -54,13 +54,13 @@ fn check_if_file_exists() -> bool {
 
 ///
 /// # read_from_file
-/// Read from the destination file and returns the hashmap.
+/// Read from the output file and returns the hashmap.
 ///
 /// ## Returns
 /// * `FileCoordsHM` - The hashmap read from the file
 fn read_from_file() -> FileCoordsHM {
     if !check_if_file_exists() {
-        println!("{}", Red.paint("The destination file does not exist"));
+        println!("{}", Red.paint("The output file does not exist"));
         println!("{}", Green.paint("Run the comparator first"));
 
         return FileCoordsHM::new();

@@ -1,6 +1,0 @@
-/target
-.idea
-
-.commitignore
-commit_message.md
-Cargo.lock

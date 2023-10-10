@@ -43,7 +43,7 @@ pub fn file_name_to_path_buf(file_name: &str) -> PathBuf {
 pub fn get_final_json_path() -> PathBuf {
     // Construct the path to 'final.json'
     let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR")); // Get the project's root directory
-    path.push("./destination");
+    path.push("./output");
     path.push("final.json");
 
     path

@@ -121,6 +121,8 @@ fn main() {
 
     // Save the file_coords_map to a file
     save_to_json(file_coords_map);
+
+    println!("Done, look for the 'final.json' file in the 'output' folder :)");
 }
 
 // END FUNCTIONS =======================================================================================  END FUNCTIONS

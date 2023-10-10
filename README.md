@@ -2,14 +2,56 @@
 
 For a [school project](https://github.com/projetDansLaMontagne) with teamates, we are working with gpx files of hicking trails and the user location. If the user notices something of interest (a fallen tree, a nice viewpoint, ...) he can add a marker on the map. The goal of those tools are:
 
- - [x] To find common coordinates between the gpx files in order to add the markers on each needed gpx files.
-- [x] To transform a gpx file into a json file.
-- [x] To calculate the distance between two Coordinates.
+- [x] `calc_distance_from_json_point`
+
+  Calculate the distance between two Coordinates.
   Example:
   ```
   $ calc_distance_from_json_point '{"lat": 45.0, "lon": 6.0}' '{"lat": 45.0, "lon": 6.0}'
   >> 0.0
   ```
-- [ ] To find the closest point of the user location on the gpx file in order to add the marker on the closest gpx file. 1/2
-  - [x] Function that finds the x closest points of a given point on a gpx file.
-  - [ ] Function that adds the marker between the 2 closest points of a given point on a gpx file.
+
+- [x] `comparator`
+
+  Find common coordinates between the gpx files and return a json file with the common coordinates.
+    Example:
+    ```
+    $ comparator
+    >> Comparing file_x.gpx and file_y.gpx...
+    >> ...
+    >> Comparing file_xn.gpx and file_yn.gpx...
+    >> Done, look for the 'final.json' file in the 'output' folder :)
+    ```
+
+- [ ] `find_closest_points`
+
+  Find the x closest points of a given point on a gpx file.
+  
+  TODO: Determinate the binary arguments and implement the function.
+
+  Example:
+  ```
+  $ find_closest_points file.gpx '{"lat": 45.0, "lon": 6.0}' 2
+  >> [{"lat": 45.0, "lon": 6.0}, {"lat": 45.0, "lon": 6.0}]
+  ```
+  
+- [x] `gpx_to_json`
+
+    Transform all the gpx files in the `assets` folder into json files in the `output` folder.
+    Example:
+    ```
+    $ gpx_to_json file.gpx
+    >> Successfully saved to: output/file_x.json
+    >> ...
+    >> Successfully saved to: output/file_n.json
+    ```
+
+- [x] `file_utils`
+
+    Contains the functions used by the other tools to read and write files (gpx and json).
+
+- [x] `reader`
+
+    Contains the functions used by the other tools to read gpx files
+  - Find common coordinates between two files from the 'final.json' file.
+  - Convert the list of common indexes into a list of common coordinates.

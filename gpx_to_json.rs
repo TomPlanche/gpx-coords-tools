@@ -26,10 +26,21 @@ use crate::gpx_utils::{Coord, Point};
 // END VARIABLES ======================================================================================= END VARIABLES
 
 // CODE ========================================================================================================= CODE
+///
+/// # gpx_to_json
+/// Convert a GPX file to a JSON file.
+/// The JSON file will contain a list of Points.
+///
+/// ## Arguments
+/// * `file_name` - The name of the file to read from.
+/// * `file_destination` - The name of the file to write to.
+///
+/// ## Returns
+/// * `bool` - True if the file was successfully saved, false otherwise.
 fn gpx_to_json(file_name: String, file_destination: String) -> bool {
-    let path_buff_from_file_1: PathBuf = file_name_to_path_buf(&file_name);
+    let path_buff_from_file: PathBuf = file_name_to_path_buf(&file_name);
 
-    let coords: Vec<Coord> = match read_gpx_file(&path_buff_from_file_1) {
+    let coords: Vec<Coord> = match read_gpx_file(&path_buff_from_file) {
         Some(coords) => coords,
         None => panic!("Could not read the file {:?}", file_name),
     };
@@ -70,7 +81,10 @@ fn main() {
             None => panic!("Could not read the file name of {:?}", file),
         };
 
-        let file_destination: String = format!("./destination/{}.json", file_name);
+        // remove the extension
+        let file_name_destination: String = file_name.split('.').collect::<Vec<&str>>()[0].to_string();
+
+        let file_destination: String = format!("./output/{}.json", file_name_destination);
 
         gpx_to_json(file_name, file_destination);
     }

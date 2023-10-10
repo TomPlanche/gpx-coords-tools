@@ -24,7 +24,18 @@ use crate::gpx_utils::{calc_distance, Coord};
 // END VARIABLES ======================================================================================= END VARIABLES
 
 // CODE ========================================================================================================= CODE
-fn find_closests_points(file_name: &str, point: Coord) -> Vec<Coord> {
+///
+/// # find_closests_points
+/// Find the n closest points to a given point in a given file.
+///
+/// ## Arguments
+/// * `file_name` - The name of the file to read from.
+/// * `point` - The point to compare to.
+/// * `nb_points` - The number of points to return.
+///
+/// ## Returns
+/// * `Vec<Coord>` - A vector of the n closest points.
+fn find_closests_points(file_name: &str, point: Coord, nb_points: usize) -> Vec<Coord> {
     let path_buff_from_file_1: PathBuf = file_name_to_path_buf(file_name);
 
     let coords: Vec<Coord> = match read_gpx_file(&path_buff_from_file_1) {
@@ -47,13 +58,14 @@ fn find_closests_points(file_name: &str, point: Coord) -> Vec<Coord> {
 
     indexes_distance
         .iter()
-        .take(4)
+        .take(nb_points)
         .map(|(i, _)| coords[*i])
         .collect()
 }
 
 fn main() {
-    println!("{:?}", find_closests_points("puertoviejofenars.gpx", Coord{lat: 42.6782078, lon: 0.0856054}));
+    println!("{:?}", find_closests_points("puertoviejofenars.gpx", Coord{lat: 42.6782078, lon: 0.0856054}, 2));
+    todo!("Determinate the binary arguments and implement the function");
 }
 // END CODE =======================================================================================  END COMPONENT
 
