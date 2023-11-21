@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 ansi_term = "0.12.1"
 gpx = "0.9.1"
+json = "0.12.4"
 serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.107"
 
@@ -30,3 +31,7 @@ path = "calc_distance_from_json_point.rs"
 [[bin]]
 name = "gpx_to_json"
 path = "gpx_to_json.rs"
+
+[[bin]]
+name = "tiles_to_json"
+path = "tiles_to_json.rs"
