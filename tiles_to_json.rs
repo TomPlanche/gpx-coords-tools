@@ -146,6 +146,17 @@ fn main() {
         None => panic!("Please provide a folder path"),
     };
 
+    let file_destination = match args().nth(2) {
+        Some(file_destination) => {
+            if !file_destination.ends_with(".json") {
+                panic!("The file destination must end with .json");
+            }
+
+            file_destination
+        },
+        None => "output/tiles_struct.json".to_string(),
+    };
+
     if !Path::new(&folder_path).exists() {
         panic!("The folder {:?} does not exist", folder_path);
     }
@@ -158,10 +169,12 @@ fn main() {
     let final_json = iterate_over_folder(final_json, Path::new(&folder_path));
 
     // create/recreate the output file
-    let mut file = File::create(format!("{}/output/aaaalledd.json", caller.display())).unwrap();
+    let mut file = File::create(format!("{}/{}", caller.display(), file_destination)).unwrap();
 
     // write the final json to the file
     file.write_all(final_json.dump().as_bytes()).unwrap();
+
+
 }
 
 /*

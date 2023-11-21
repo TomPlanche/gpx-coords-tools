@@ -55,3 +55,7 @@ For a [school project](https://github.com/projetDansLaMontagne) with teamates, w
     Contains the functions used by the other tools to read gpx files
   - Find common coordinates between two files from the 'final.json' file.
   - Convert the list of common indexes into a list of common coordinates.
+
+- [x] `tiles_to_json`
+
+    Read the tiles from the `tiles` folder and return a json file with the tiles structure.
