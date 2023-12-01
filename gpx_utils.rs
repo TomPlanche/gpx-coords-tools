@@ -76,6 +76,7 @@ impl Eq for Coord {}
 ///
 /// ## Returns
 /// * `f64` - The distance between the two coordinates (in meters).
+#[allow(dead_code)]
 pub fn calc_distance(coord1: Coord, coord2: Coord, in_meter: Option<bool>) -> f64 {
     let Coord { lat: lat_1, lon: lon_1 } = coord1;
     let Coord { lat: lat_2, lon: lon_2 } = coord2;

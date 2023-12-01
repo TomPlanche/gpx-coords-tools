@@ -1,0 +1,9 @@
+/target
+/output
+/assets/Tiles
+.idea
+
+.commitignore
+commit_message.md
+Cargo.lock
+/assets/Tiles.zip

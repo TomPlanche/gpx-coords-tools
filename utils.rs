@@ -11,13 +11,16 @@ use std::collections::HashMap;
 // END IMPORTS ==========================================================================================   END IMPORTS
 
 // VARIABLES ================================================================================================ VARIABLE
+#[allow(dead_code)]
 pub type FileCoordsHM = HashMap<String, HashMap<String, Vec<(usize, usize)>>>;
 
+#[allow(dead_code)]
 pub enum VecOrHashMap<T, U> {
     Vec(Vec<T>),
     HashMap(HashMap<T, U>),
 }
 
+#[allow(dead_code)]
 impl<T, U> VecOrHashMap<T, U> {
     pub fn is_empty(&self) -> bool {
         match self {
@@ -38,6 +41,7 @@ impl<T, U> VecOrHashMap<T, U> {
 ///
 /// ## Returns
 /// * `Vec<(T, T)>` - The unique pairs of the vector
+#[allow(dead_code)]
 pub fn get_unique_pairs<T>(vector: &Vec<T>) -> Vec<(&T, &T)>
 where T: Clone {
     let mut unique_pairs: Vec<(&T, &T)> = Vec::new();

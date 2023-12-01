@@ -1,7 +1,10 @@
 ///
-/// # tiles_to_json.rs
-/// This file will be a binary, it will take a folder as an argument and will output a json file.
+/// # folder_to_json.rs
+/// This file takes a folder as input and outputs a JSON file.
+/// It will iterate through the folder and its subfolders to find all files and their
+/// paths.
 ///
+/// # # Author
 /// Tom Planche <github.com/tomPlanche>
 
 // Imports  ==============================================================================  Imports
@@ -15,15 +18,14 @@ use std::{
         current_dir,
         args,
     },
-    fs::{
-        File
-    },
     io::Write,
     path::Path,
 };
+use std::path::PathBuf;
 
 use crate::file_utils::{iterate_over_folder, Mode};
 // Variables  =========================================================================== Variables
+
 
 // Functions  =========================================================================== Functions
 fn main() {
@@ -44,32 +46,43 @@ fn main() {
 
             file_destination
         },
-        None => "output/tiles_struct.json".to_string(),
+        None => "output/all_requires.json".to_string(),
     };
 
     if !Path::new(&folder_path).exists() {
         panic!("The folder {:?} does not exist", folder_path);
     }
 
-    let mut final_json: JsonValue = json::object! {};
+    // final json is a simple array
+    let final_json: JsonValue = json::array![];
+
+    // write '[' to the file
+    let mut file = std::fs::File::create(&file_destination).unwrap();
+    file.write_all(b"[").unwrap();
+
 
     // Iterate over the folder.
     // If the element is a file, add it to the final json.
     // If the element is a folder, add it to the final json and iterate over it.
-    let final_json = iterate_over_folder(
+    iterate_over_folder(
         final_json,
         Path::new(&folder_path),
-        Mode::Tiles,
-        None
+        Mode::Files,
+        Some(folder_path.to_string()),
+        Some(&PathBuf::from(file_destination.clone())),
     );
 
-    // create/recreate the output file
-    let mut file = File::create(format!("{}/{}", caller.display(), file_destination)).unwrap();
+    // write ']' to the file
 
-    // write the final json to the file
-    file.write_all(final_json.dump().as_bytes()).unwrap();
+    let mut file = std::fs::OpenOptions::new()
+        .append(true)
+        .open(&file_destination)
+        .unwrap();
+
+    file.write_all(b"]").unwrap();
+
 }
 
 /*
- * End of file /tiles_to_json.rs
+ * End of file /folder_to_json.rs
  */

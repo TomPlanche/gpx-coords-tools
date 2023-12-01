@@ -35,3 +35,7 @@ path = "gpx_to_json.rs"
 [[bin]]
 name = "tiles_to_json"
 path = "tiles_to_json.rs"
+
+[[bin]]
+name = "folder_to_json"
+path = "folder_to_json.rs"
